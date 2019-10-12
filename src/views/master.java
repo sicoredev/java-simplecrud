@@ -5,18 +5,65 @@
  */
 package views;
 
+import config.function;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Zeref
  */
 public class master extends javax.swing.JFrame {
-
+    function f = new function();
     /**
      * Creates new form master
      */
     public master() {
         initComponents();
+        Clear();
+        tampil("");
     }
+    private void Clear(){
+        t_nama.setText("");
+        t_hp.setText("");
+        t_kelas.setText("");
+        t_email.setText("");
+
+   }
+     private void tampil(String cari) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("no");
+        model.addColumn("ID");
+        model.addColumn("Nama");
+        model.addColumn("Kelas");
+        model.addColumn("No Hp");
+        model.addColumn("Email");
+        try {
+            if (cari != null) {
+                f.select("select * from user where name like '%" + cari + "%' or kelas like '%" + cari + "%'");
+            } else {
+                f.select("select * from user ");
+            }
+            int no = 1;
+            while (f.rs.next()) {
+                model.addRow(new Object[]{
+                    no++,
+                    f.rs.getString("id"),
+                    f.rs.getString("name"),
+                    f.rs.getString("kelas"),
+                    f.rs.getString("nohp"),
+                    f.rs.getString("email")
+
+                });
+
+            }
+            tabel.setModel(model);
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,6 +179,11 @@ public class master extends javax.swing.JFrame {
         b_delete.setText("Delete");
 
         b_clear.setText("Clear");
+        b_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_clearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -159,6 +211,12 @@ public class master extends javax.swing.JFrame {
                 .addComponent(b_clear)
                 .addContainerGap())
         );
+
+        cari.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                cariKeyReleased(evt);
+            }
+        });
 
         jLabel6.setText("Cari :");
 
@@ -217,6 +275,14 @@ public class master extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void b_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_clearActionPerformed
+        Clear();        // TODO add your handling code here:
+    }//GEN-LAST:event_b_clearActionPerformed
+
+    private void cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cariKeyReleased
+        tampil(cari.getText());       // TODO add your handling code here:
+    }//GEN-LAST:event_cariKeyReleased
 
     /**
      * @param args the command line arguments
