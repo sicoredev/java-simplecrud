@@ -173,6 +173,11 @@ public class master extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Action"));
 
         b_add.setText("Add");
+        b_add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_addActionPerformed(evt);
+            }
+        });
 
         b_update.setText("Update");
 
@@ -283,6 +288,12 @@ public class master extends javax.swing.JFrame {
     private void cariKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cariKeyReleased
         tampil(cari.getText());       // TODO add your handling code here:
     }//GEN-LAST:event_cariKeyReleased
+
+    private void b_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_addActionPerformed
+        f.cud("INSERT into user value (null,'" + t_nama.getText() + "','" + t_kelas.getText() + "','" + t_hp.getText() + "','" + t_email.getText() + "')", "Data dengan Nama '" + t_nama.getText() + "' berhasil ditambahkan");
+        Clear();
+        tampil("");        // TODO add your handling code here:
+    }//GEN-LAST:event_b_addActionPerformed
 
     /**
      * @param args the command line arguments
