@@ -23,4 +23,7 @@ public class configdb {
         }
         return con;
     }
+    public static void main(String[] args) throws SQLException {
+        System.out.println(Con());
+    }
 }
