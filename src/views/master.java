@@ -6,6 +6,7 @@
 package views;
 
 import config.function;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class master extends javax.swing.JFrame {
     function f = new function();
+    String id;
     /**
      * Creates new form master
      */
@@ -27,6 +29,7 @@ public class master extends javax.swing.JFrame {
         t_hp.setText("");
         t_kelas.setText("");
         t_email.setText("");
+        id="";
 
    }
      private void tampil(String cari) {
@@ -108,6 +111,11 @@ public class master extends javax.swing.JFrame {
 
             }
         ));
+        tabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabel);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -180,8 +188,18 @@ public class master extends javax.swing.JFrame {
         });
 
         b_update.setText("Update");
+        b_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_updateActionPerformed(evt);
+            }
+        });
 
         b_delete.setText("Delete");
+        b_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_deleteActionPerformed(evt);
+            }
+        });
 
         b_clear.setText("Clear");
         b_clear.addActionListener(new java.awt.event.ActionListener() {
@@ -294,6 +312,48 @@ public class master extends javax.swing.JFrame {
         Clear();
         tampil("");        // TODO add your handling code here:
     }//GEN-LAST:event_b_addActionPerformed
+
+    private void b_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_updateActionPerformed
+        if (t_nama.getText().isEmpty() == false) {
+            f.cud("update user set name = '" + t_nama.getText() +
+                    "', kelas = '" + t_kelas.getText() +
+                    "', nohp='" + t_hp.getText() +
+                    "', email = '" + t_email.getText() + "' where id = '" + id + "'", "Data dengan id '" + id + "' berhasil diubah");
+            Clear();
+            tampil("");
+   
+        } else {
+            JOptionPane.showMessageDialog(null, "Poloh data yang akan di Edit");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_b_updateActionPerformed
+
+    private void b_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_deleteActionPerformed
+           if (t_nama.getText().isEmpty() == false) {
+            int konfirmasi = JOptionPane.showConfirmDialog(null, "Apakah Anda ingin menghapus", "Hapus", JOptionPane.YES_NO_OPTION);
+
+            if (konfirmasi == 0) {
+                    f.cud("delete from user where id='" + id + "'", "Data dengan id '" + id + "' berhasil dihapus");
+                    Clear();
+                    tampil("");
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Poloh data yang akan di hapus");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_b_deleteActionPerformed
+
+    private void tabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMouseClicked
+        int row = tabel.getSelectedRow();
+        id = tabel.getModel().getValueAt(row, 1).toString();
+        String nama = tabel.getModel().getValueAt(row, 2).toString();
+        String kelas = tabel.getModel().getValueAt(row, 3).toString();
+        String hp = tabel.getModel().getValueAt(row, 4).toString();
+        String email = tabel.getModel().getValueAt(row, 5).toString();
+        t_nama.setText(nama);
+        t_kelas.setText(kelas);
+        t_hp.setText(hp);
+        t_email.setText(email);        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelMouseClicked
 
     /**
      * @param args the command line arguments
